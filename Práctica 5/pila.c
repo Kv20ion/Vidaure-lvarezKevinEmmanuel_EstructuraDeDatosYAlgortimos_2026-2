@@ -1,91 +1,78 @@
+/*
+ * ELABORADO POR: BRIGADA #1
+ *
+ * ESPINOSA SALVADOR ROMAN
+ * CASTELÁN SIERRA GAEL
+ * MALDONADO MARTÍNEZ ERICK FERNANDO
+ * VIDAURE ÁLVAREZ KEVIN EMMANUEL
+ *
+ */
+
 #include "pila.h"
 #include <stdlib.h>
 
-/* Nodo de la pila */
-struct Nodo
-{
-	int dato;
-	Nodo *sig;
+// Estructura para almacenar datos de la PILA
+struct Nodo {
+    ElementoPila dato;
+    Nodo *sig;
 };
 
-void pila_init(Pila *p)
-{
-	if (!p)
-		return;
-	p->tope = NULL;
-	p->tam = 0;
+// Función para inicializar la pila
+void pila_init(Pila *p) {
+    if (!p) return;
+    p->tope = NULL;
+    p->tam = 0;
 }
 
-int pila_esta_vacia(Pila *p)
-{
-	if (!p)
-		return 1;
-	return (p->tam == 0) ? 1 : 0;
+// Función para mostrar si la pila está vacía
+int pila_esta_vacia(Pila *p) {
+    return (!p || p->tam == 0) ? 1 : 0;
 }
 
-int pila_push(Pila *p, int valor)
-{
-	Nodo *nuevo = (Nodo *)malloc(sizeof(Nodo));
-	if (!p)
-		return -1;
-
-	nuevo->dato = valor;
-	nuevo->sig = p->tope;
-
-	p->tope = nuevo;
-	p->tam++;
-
-	return 0;
+// Función push para meter elementos a la pila
+int pila_push(Pila *p, ElementoPila valor) {
+    if (!p) return 0;
+    Nodo *nuevo = (Nodo*) malloc(sizeof(Nodo));
+    if (!nuevo) return 0;
+    nuevo->dato = valor;
+    nuevo->sig = p->tope;
+    p->tope = nuevo;
+    p->tam++;
+    return 1;
 }
 
-int pila_pop(Pila *p, int *salida)
-{
-	if (!p || !salida)
-		return .1;
-	if (pila_esta_vacia(p))
-		return -2;
-
-	Nodo *temp = p->tope;
-	*salida = temp->dato;
-
-	p->tope = temp->sig;
-
-	free(temp);
-	p->tam--;
-
-	return 0;
+// Función para eliminar y devolver el elemento superior
+int pila_pop(Pila *p, ElementoPila *salida) {
+    if (!p || p->tam == 0) return 0;
+    Nodo *aux = p->tope;
+    *salida = aux->dato;
+    p->tope = aux->sig;
+    free(aux);
+    p->tam--;
+    return 1;
 }
 
-int pila_peek(Pila *p, int *salida)
-{
-	if (!p || !salida)
-		return -1;
-	if (pila_esta_vacia(p))
-		return -2;
-
-	*salida = p->tope->dato;
-
-	return 0;
+// Función para devolver el elemento superior sin eliminarlo
+int pila_peek(Pila *p, ElementoPila *salida) {
+    if (!p || p->tam == 0) return 0;
+    *salida = p->tope->dato;
+    return 1;
 }
 
-void pila_clear(Pila *p)
-{
-	if (!p)
-		return;
-
-	while (!pila_esta_vacia(p))
-	{
-		Nodo *temp = p->tope;
-		p->tope = temp->sig;
-		free(temp);
-	}
-
-	p->tam = 0;
+// Función para limpiar la pila
+void pila_clear(Pila *p) {
+    if (!p) return;
+    Nodo *actual = p->tope;
+    while (actual) {
+        Nodo *sig = actual->sig;
+        free(actual);
+        actual = sig;
+    }
+    p->tope = NULL;
+    p->tam = 0;
 }
 
-void pila_destroy(Pila *p)
-{
-	if (!p)
-		return;
-	pila_clear(p);
+// Función para destruir la pila
+void pila_destroy(Pila *p) {
+    pila_clear(p); // Solo limpia la pila, sin datos no hay pila
 }
