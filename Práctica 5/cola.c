@@ -1,98 +1,95 @@
-// Librerias a usar
+/*
+ * ELABORADO POR: BRIGADA #1
+ *
+ * ESPINOSA SALVADOR ROMAN
+ * CASTELÁN SIERRA GAEL
+ * MALDONADO MARTÍNEZ ERICK FERNANDO
+ * VIDAURE ÁLVAREZ KEVIN EMMANUEL
+ *
+ */
+
 #include "cola.h"
 #include <stdio.h>
 #include <stdlib.h>
 
-// Estructura de Nodo
+// Estructura para almacenar los elementos
 struct Nodo {
-  int dato;
-  Nodo *sig;
+    ElementoCola dato;
+    Nodo *sig;
 };
 
-// Funcion para inicializar la estrucutra
+// Función para inicializar la cola
 void inicializar(Cola *c) {
-  c -> frente = NULL;
-  c -> final = NULL;
-  c -> tam = 0;
+    c->frente = NULL;
+    c->final = NULL;
+    c->tam = 0;
 }
 
-// Funcion para encolar
-void encolar(Cola *c, int v) {
-  Nodo* nuevo = (Nodo*) malloc(sizeof(Nodo)); // Memoria dinamica
-  nuevo -> dato = v;
-  if (nuevo == NULL) return; // Manejo del error
-  nuevo -> dato = v;
-  nuevo -> sig = NULL;
+// Función para encolar
+void encolar(Cola *c, ElementoCola v) {
+    Nodo *nuevo = (Nodo*) malloc(sizeof(Nodo)); // Uso de memoria dinámica para gestionar Nodos
+    if (nuevo == NULL) return; // Error de memoria
+    nuevo->dato = v;
+    nuevo->sig = NULL;
 
-  if (c -> final == NULL) { // Cola vacia
-    c -> frente = nuevo;
-    c -> final = nuevo;
-  }
-  else {
-    c -> final -> sig = nuevo;
-    c -> final = nuevo;
-  }
-  c -> tam++;
+    if (c->final == NULL) { // Cola vacía
+        c->frente = nuevo;
+        c->final = nuevo;
+    } else {
+        c->final->sig = nuevo;
+        c->final = nuevo;
+    }
+    c->tam++;
 }
 
-// Funcion para desencolar
-int desencolar(Cola *c) {
-  int valor = 0;
+// Función para desencolar
+int desencolar(Cola *c, ElementoCola *salida) {
+    if (c->frente == NULL) return 0; // Cola vacía
 
-  // Verificar si la cola ya esta vacia
-  if (c -> frente == NULL) {
-    exit(EXIT_FAILURE); // Sale del programa con ERROR
-  }
+    Nodo *aux = c->frente;
+    *salida = aux->dato;
+    c->frente = aux->sig;
 
-  Nodo *aux = c -> frente;
-  valor = aux -> dato;
-  c -> frente = aux -> sig;
-
-  // Verifica que se hayan recorrido los valores
-  if (c -> frente == NULL) {
-    c -> final = NULL;
-  }
-  free(aux); // Libera memoria
-
-  c -> tam--; // Variable tam hace un decremento
-  return valor;
+    if (c->frente == NULL) {
+        c->final = NULL;
+    }
+    free(aux);
+    c->tam--;
+    return 1; // Éxito
 }
 
-// Funcion para verificar si la cola esta vacia
+// Función cola vacía
 int colaVacia(Cola *c) {
-  return c -> frente == NULL;
+    return c->frente == NULL;
 }
 
-// Funcion para devolver el tamanio de la cola
+// Función para el tamaño de la cola
 int colaTamanio(Cola *c) {
-  return c ? c -> tam : 0;
+    return c ? c->tam : 0;
 }
 
-// Funcion para limpiar los datos de la cola
+// Función para limpiar la cola
 void limpiarCola(Cola *c) {
     if (!c) return;
-
     Nodo *it = c->frente;
     while (it) {
         Nodo *sig = it->sig;
         free(it);
         it = sig;
     }
-
     c->frente = NULL;
-    c->final  = NULL;
-    c->tam    = 0;
+    c->final = NULL;
+    c->tam = 0;
 }
 
-// Destruir la cola (solo la limpia, sin datos no hay cola)
+// Función para destruir la cola
 void destruirCola(Cola *c) {
-    limpiarCola(c);
+    limpiarCola(c); // Limpia la cola, din datos no hay cola
 }
 
-// Funcion para mostrar el ultimo elemento
-int colaFrente(Cola *c) {
-  if (c -> frente == NULL) {
-    exit(EXIT_FAILURE); // Si la cola esta vacia sale con ERROR
-  }
-  return c -> frente -> dato; // Regresa el elemento al frente
+// Función para encontrar el elemento al frente de la cola
+int colaFrente(Cola *c, ElementoCola *salida) {
+    if (c->frente == NULL) return 0;
+    *salida = c->frente->dato;
+    return 1;
 }
