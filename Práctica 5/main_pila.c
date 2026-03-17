@@ -1,17 +1,47 @@
+/*
+ * PRACTICA 5: Estrucutra de Datos y Algoritmos
+ *
+ * Implementación de la PILA
+ * 
+ * Una pila es una estructura de datos lineal
+ * que sigue el principio LIFO (Last In, First Out),
+ * lo que significa que el último elemento en
+ * entrar es el primero en salir. Su funcionamiento
+ * puede compararse con una torre de platos:
+ * solo es posible acceder al elemento que está en
+ * la parte superior.
+ *
+ * ELABORADO POR: BRIGADA #1
+ *
+ * ESPINOSA SALVADOR ROMAN
+ * CASTELÁN SIERRA GAEL
+ * MALDONADO MARTÍNEZ ERICK FERNANDO
+ * VIDAURE ÁLVAREZ KEVIN EMMANUEL
+ *
+ * Última modificación: 16 de marzo del 2026
+ *
+ */
+
 #include <stdio.h>
 #include "pila.h"
 
 int main() {
     Pila p;
     pila_init(&p);
-    int opcion, n;
+    int opcion, n, tortadejamon;
     ElementoPila elem;
 
-    printf("=== PILAS (datos con estructura) ===\n");
+    printf("=== PILAS ===\n");
 
     // Ingreso inicial de N nodos
-    printf("¿Cuántos elementos desea apilar al inicio? ");
-    scanf("%d", &n);
+    printf("INGRESE EL NÚMERO DE ELEMENTOS QUE DESEA APILAR AL INICIO: ");
+    tortadejamon = scanf("%d", &n);
+    while (getchar() != '\n'); // Limpiar el buffer
+    if (tortadejamon != 1 || n < 1 || n > 100) { // Blindaje para evitar saturaraciones
+      printf("ERROR. SE EXCEDE EL LÍMITE DE NODOS.\n");
+      continue;
+    }
+
     for (int i = 0; i < n; i++) {
         printf("Elemento %d:\n", i+1);
         printf("  Valor: ");
@@ -22,7 +52,7 @@ int main() {
     }
 
     do {
-        printf("\n--- Menú Pila ---\n");
+        printf("\n=== MENÚ PARA LA PILA ===\n");
         printf("1. Apilar 1 elemento\n");
         printf("2. Apilar N elementos\n");
         printf("3. Desapilar\n");
@@ -31,7 +61,12 @@ int main() {
         printf("6. ¿Está vacía?\n");
         printf("7. Salir\n");
         printf("Opción: ");
-        scanf("%d", &opcion);
+        tortadejamon = scanf("%d", &opcion);
+        while (getchar() != '\n'); // Limpiar el buffer
+        if (tortadejamon != 1 || opcion < 1 || opcion > 7) { // Blindaje para evitar saturaraciones
+          printf("ERROR. SE EXCEDE EL LÍMITE DE NODOS.\n");
+          continue;
+        }
 
         switch (opcion) {
             case 1:
@@ -44,7 +79,12 @@ int main() {
                 break;
             case 2:
                 printf("¿Cuántos elementos? ");
-                scanf("%d", &n);
+                tortadejamon = scanf("%d", &n);
+                while (getchar() != '\n'); // Limpiar el buffer
+                if (tortadejamon != 1 || n < 1 || n > 100) { // Blindaje para evitar saturaraciones
+                  printf("ERROR. SE EXCEDE EL LIMITE DE NODOS.\n");
+                  continue;
+                }
                 for (int i = 0; i < n; i++) {
                     printf("Elemento %d:\n", i+1);
                     printf("  Valor: ");
